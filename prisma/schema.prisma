@@ -1,0 +1,89 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum DeviceType {
+  SMART_PLUG
+  LIGHT
+  HEAT_PUMP
+  GAS_BOILER
+  PV_INVERTER
+  THERMOSTAT
+  ENERGY_METER
+}
+
+enum IntegrationType {
+  TUYA_CLOUD
+  LOCAL_LAN
+  HOME_ASSISTANT
+  MANUAL_MOCK
+}
+
+model User {
+  id           String        @id @default(uuid())
+  email        String        @unique
+  name         String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  rooms        Room[]
+  integrations Integration[]
+}
+
+model Room {
+  id        String   @id @default(uuid())
+  name      String
+  icon      String?  @default("Home")
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  devices   Device[]
+  createdAt DateTime @default(now())
+}
+
+model Device {
+  id              String          @id @default(uuid())
+  name            String
+  type            DeviceType
+  roomName        String?
+  roomId          String?
+  room            Room?           @relation(fields: [roomId], references: [id], onDelete: SetNull)
+  isOnline        Boolean         @default(true)
+  state           Boolean         @default(false)
+  currentPowerW   Float           @default(0.0)
+  targetTemp      Float?
+  currentTemp     Float?
+  brightness      Int?            @default(100)
+  integrationType IntegrationType @default(MANUAL_MOCK)
+  externalId      String?
+  logs            EnergyLog[]
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+}
+
+model EnergyLog {
+  id         String   @id @default(uuid())
+  deviceId   String
+  device     Device   @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+  powerWatts Float
+  energyKwh  Float
+  timestamp  DateTime @default(now())
+
+  @@index([deviceId, timestamp])
+}
+
+model Integration {
+  id        String          @id @default(uuid())
+  userId    String
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      IntegrationType
+  name      String
+  config    Json
+  isActive  Boolean         @default(true)
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+}
