@@ -28,10 +28,12 @@ enum IntegrationType {
 model User {
   id           String        @id @default(uuid())
   email        String        @unique
+  username     String?       @unique
   name         String?
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   rooms        Room[]
+  devices      Device[]
   integrations Integration[]
 }
 
@@ -52,6 +54,8 @@ model Device {
   roomName        String?
   roomId          String?
   room            Room?           @relation(fields: [roomId], references: [id], onDelete: SetNull)
+  userId          String?
+  user            User?           @relation(fields: [userId], references: [id], onDelete: Cascade)
   isOnline        Boolean         @default(true)
   state           Boolean         @default(false)
   currentPowerW   Float           @default(0.0)
@@ -63,6 +67,8 @@ model Device {
   logs            EnergyLog[]
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
+
+  @@index([userId])
 }
 
 model EnergyLog {
