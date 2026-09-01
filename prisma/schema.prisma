@@ -12,84 +12,97 @@ enum DeviceType {
   SMART_PLUG
   LIGHT
   HEAT_PUMP
-  GAS_BOILER
   PV_INVERTER
-  THERMOSTAT
+  GAS_BOILER
   ENERGY_METER
 }
 
 enum IntegrationType {
   TUYA_CLOUD
   LOCAL_LAN
-  HOME_ASSISTANT
   MANUAL_MOCK
+  HOME_ASSISTANT
 }
 
 model User {
-  id           String        @id @default(uuid())
+  id           String        @id
   email        String        @unique
-  username     String?       @unique
-  name         String?
+  fullName     String?
+  devices      Device[]
+  rooms        Room[]
+  integrations Integration[]
+  energyLogs   EnergyLog[]
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
-  rooms        Room[]
-  devices      Device[]
-  integrations Integration[]
 }
 
 model Room {
   id        String   @id @default(uuid())
   name      String
-  icon      String?  @default("Home")
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   devices   Device[]
   createdAt DateTime @default(now())
+
+  @@index([userId])
 }
 
 model Device {
   id              String          @id @default(uuid())
   name            String
   type            DeviceType
-  roomName        String?
-  roomId          String?
-  room            Room?           @relation(fields: [roomId], references: [id], onDelete: SetNull)
-  userId          String?
-  user            User?           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  roomName        String          @default("Salon")
   isOnline        Boolean         @default(true)
   state           Boolean         @default(false)
-  currentPowerW   Float           @default(0.0)
-  targetTemp      Float?
-  currentTemp     Float?
+  currentPower    Float           @default(0.0) // Aktualny pobór mocy w Watach (W)
+
+  // Pola profilu do Auto-Restore i pamięci ustawień
   brightness      Int?            @default(100)
+  colorTemp       Int?            @default(4000)
+  colorRgb        String?         @default("#ffffff")
+  macAddress      String?
+  isRecoverable   Boolean         @default(true)
+
   integrationType IntegrationType @default(MANUAL_MOCK)
   externalId      String?
-  logs            EnergyLog[]
+
+  userId          String
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  roomId          String?
+  room            Room?           @relation(fields: [roomId], references: [id], onDelete: SetNull)
+
+  energyLogs      EnergyLog[]
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
+
+  @@index([userId])
+  @@index([roomId])
+}
+
+model Integration {
+  id          String          @id @default(uuid())
+  type        IntegrationType
+  credentials Json?
+  isActive    Boolean         @default(true)
+  userId      String
+  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
 
   @@index([userId])
 }
 
 model EnergyLog {
-  id         String   @id @default(uuid())
-  deviceId   String
-  device     Device   @relation(fields: [deviceId], references: [id], onDelete: Cascade)
-  powerWatts Float
-  energyKwh  Float
-  timestamp  DateTime @default(now())
+  id          String   @id @default(uuid())
+  power       Float
+  energy      Float
+  recordedAt  DateTime @default(now())
+  deviceId    String
+  device      Device   @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([deviceId, timestamp])
-}
-
-model Integration {
-  id        String          @id @default(uuid())
-  userId    String
-  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  type      IntegrationType
-  name      String
-  config    Json
-  isActive  Boolean         @default(true)
-  createdAt DateTime        @default(now())
-  updatedAt DateTime        @updatedAt
+  @@index([deviceId])
+  @@index([userId])
 }
