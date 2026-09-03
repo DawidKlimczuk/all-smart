@@ -62,6 +62,7 @@ model Device {
   colorRgb        String?         @default("#ffffff")
   macAddress      String?
   isRecoverable   Boolean         @default(true)
+  isArchived      Boolean         @default(false)
 
   integrationType IntegrationType @default(MANUAL_MOCK)
   externalId      String?
