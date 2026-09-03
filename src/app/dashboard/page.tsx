@@ -749,13 +749,13 @@ export default function DashboardPage() {
 
       {/* Modale pomocnicze */}
       {user && (
-        <AddDeviceModal
-          userId={user.id}
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          onDeviceAdded={(newDev) => setDevices((prev) => [newDev, ...prev])}
-        />
-      )}
+  <AddDeviceModal
+    userId={user.id}
+    isOpen={isModalOpen}
+    onClose={() => setIsModalOpen(false)}
+    onDeviceAdded={() => fetchDevices(user.id)}
+  />
+)}
 
       {selectedLight && (
         <LightControlModal

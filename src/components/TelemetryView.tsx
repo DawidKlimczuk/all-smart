@@ -41,7 +41,7 @@ export default function TelemetryView({ userId }: TelemetryProps) {
   useEffect(() => {
     fetchTelemetry(range);
 
-    // Cykliczne odświeżanie telemetrii co 5 sekund
+    // odświeżanie co 5 sekund
     const interval = setInterval(() => {
       fetchTelemetry(range);
     }, 5000);
@@ -52,7 +52,7 @@ export default function TelemetryView({ userId }: TelemetryProps) {
   const stats = data?.stats || { maxPower: 0, minPower: 0, avgPower: 0, monthlyKwh: 0 };
   const history: Array<{ time: string; power: number }> = data?.history || [];
 
-  // Obliczenia wymiarów fali SVG
+  // Obliczenia fale SVG
   const maxVal = Math.max(80, stats.maxPower * 1.2);
   const svgWidth = 900;
   const svgHeight = 260;
