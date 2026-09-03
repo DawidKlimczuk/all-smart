@@ -44,7 +44,7 @@ Aplikacja wykorzystuje relacyjny model danych zaprojektowany pod elastyczne typy
 
 1. **Sklonuj repozytorium:**
    ```bash
-   git clone <url-twojego-repozytorium>
+   git clone <(https://github.com/DawidKlimczuk/all-smart)>
    cd allsmart
 
    
