@@ -43,7 +43,7 @@ Aplikacja wykorzystuje relacyjny model danych zaprojektowany pod elastyczne typy
 
 ---
 
-## ⚙️ Uruchomienie Lokalne
+## ⚙️ Uruchomienie Lokalne 
 
 1. **Sklonuj repozytorium:**
    ```bash
@@ -75,7 +75,8 @@ Aplikacja będzie dostępna pod adresem: http://localhost:3000.
 
 ---
 
-##🌿 Plany rozwoju
+
+## 🌿 Plany rozwoju 
 
 **Możliwość podłączenia aplikacji tuya przez kod QR lub email i hasło**
 
