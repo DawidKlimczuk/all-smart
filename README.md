@@ -69,3 +69,10 @@ Uruchom serwer deweloperski:
 Bash
 npm run dev
 Aplikacja będzie dostępna pod adresem: http://localhost:3000.
+
+---
+
+##🌿 Plany rozwoju
+**Możliwość podłączenia aplikacji tuya przez kod QR lub email i hasło**
+**Dodawanie urządzeń po lokalnym API**
+**Dodawanie kamer oraz wszelkich urządzeń smart**
