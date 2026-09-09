@@ -6,9 +6,9 @@
 
 Nowoczesna aplikacja webowa do centralnego zarządzania ekosystemem inteligentnego domu oraz monitorowania zużycia energii w czasie rzeczywistym.
 
-## 😪 AKTUALNIE BRAK MOŻLIWOŚCI POŁĄCZENIA Z APLIKACJĄ TUYA - PROBLEM LEŻY PO STRONIE TUYA DEVELOPER API
+## ‼️ AKTUALNIE BRAK MOŻLIWOŚCI POŁĄCZENIA Z APLIKACJĄ TUYA - PROBLEM LEŻY PO STRONIE TUYA DEVELOPER API ‼️
+**❕ Zrzuty ekranu są prezentacją działania aplikacji na podstawie mojego prywatnego API użytkownika tuya ❕**
 
-**Zrzuty ekranu są prezentacją działania aplikacji na podstawie mojego prywatnego API użytkownika tuya**
 ---
 
 ## 🚀 Główne Funkcjonalności
